@@ -30,4 +30,42 @@ const counts = {
 };
 ```
 
+## Interactions
 
+### Name List Panel
+- Available along the left
+    - inline *remove* controls
+    - above list is input with *add* button
+- Selecting name slides calendar to the side showing details
+    - alt. use overlay of details over calendar (instead of sliding)
+
+### Detail Panel
+Details available on tech people:
+- Editable tech name
+- Entered exclusion dates (w/ *remove* ctl)
+- Calendar/datepicker for adding exclusion dates (also considering [v-calendar](https://vcalendar.netlify.com/datepicker) for this)
+- *Remove* control to remove current person
+
+Details closed by clicking one of the following:
+- X button (in some corner)
+- White-space of name list
+- Calendar pane hides detail
+
+### Calendar
+This is where dates are generated and shown. Following actions will be available:
+- *Schedule!* button - runs main schedule algorythm
+- Export buttons - **TODO**: figure out how to do this
+    - Google Calendar
+    - iCalendar
+    - Outlook Calendar
+
+Can also navigate the calendar and view who's scheduled when (probably by hovering dates)
+
+## Mobile Treatment
+For mobile, 3 tabs will show at the bottom of the screen: 
+
+1. Name List
+2. Details
+3. Calendar
+
+Details will display "none selected" message when necessary.
