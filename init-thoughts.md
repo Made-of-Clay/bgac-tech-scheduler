@@ -1,12 +1,17 @@
 # BGAC Tech Scheduler
 
 ## Overall Steps
-- enter tech people
-- enter exclusion dates / person
-- click to assign workers
+- load names from before
+    - stored in database? file? local storage?
+- add/edit/delete tech people
+- enter exclusion dates (globally and /person)
+- click (button) to assign workers (i.e. run the scheduler)
     - assign random workers evenly on available dates
     - shuffle audio/visual assignments
     - auto-assign prior monday practice to video person
+- show results in vue component calendar (considering [v-calendar](https://vcalendar.netlify.com/))
+    - tech people are color coded using dots (or bars)
+    - hover shows who-doing-what
 - export to outlook calendar, google calendar, icalendar formats for import
     - maybe excel too
 
