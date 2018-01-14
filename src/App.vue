@@ -1,22 +1,37 @@
 <template>
-    <div id="app">
-        <img src="./assets/logo.png">
-        <h1>{{ msg }}</h1>
-        <h2>Essential Links</h2>
-        <ul>
-            <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-            <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-            <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-            <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
+    <main id="app" class="l-main-container">
+        <div id="techee-container" class="l-techee-container">
+            <div id="techee-list" class="l-techee-list">
+                input to add names
+                + button to add names
+
+                list of names already added
+                    selectable techee name
+                    - button to remove techee name
+            </div>
+            <div id="techee-detail" class="l-techee-detail">
+                *only shows when techee is selected
+                *click none-name space to deselect techee
+                editable techee name
+                unavailable dates (v-calendar?)
+                list of added unavailable dates
+                    date
+                    - button to remove date
+            </div>
+        </div>
+
+        <div id="calendar-space" class="l-calendar-container">
+            v-calendar
+            big "schedule" button (main call-to-action)
+            buttons to export to diff calendar types
+        </div>
+
+        <ul id="mobile-tabs" class="m-tabs l-m-tabs">
+            <li class="m-tab">Techees</li>
+            <li class="m-tab">Details</li>
+            <li class="m-tab">Calendar</li>
         </ul>
-        <h2>Ecosystem</h2>
-        <ul>
-            <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-            <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-            <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-            <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-        </ul>
-    </div>
+    </main>
 </template>
 
 <script>
@@ -24,7 +39,6 @@ export default {
     name: 'app',
     data () {
         return {
-            msg: 'Welcome to Your Vue.js App'
         };
     }
 }
