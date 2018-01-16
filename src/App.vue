@@ -1,15 +1,7 @@
 <template>
-    <main id="app" class="l-main-container">
-        <div id="techee-container" class="l-techee-container">
-            <div id="techee-list" class="l-techee-list">
-                input to add names
-                + button to add names
-
-                list of names already added
-                    selectable techee name
-                    - button to remove techee name
-            </div>
-            <div id="techee-detail" class="l-techee-detail">
+    <main id="app" class="main-container">
+        <div id="techee-detail" class="detail-overlay">
+            <div class="detail-overlay__content">
                 *only shows when techee is selected
                 *click none-name space to deselect techee
                 editable techee name
@@ -20,11 +12,34 @@
             </div>
         </div>
 
-        <div id="calendar-space" class="l-calendar-container">
+        <section id="techee-container" class="container-techee">
+            <div class="techee-add">
+                <input type="text" class="techee-add__input">
+                <button class="techee-add__button">+</button>
+            </div>
+
+            <ul class="techee-list">
+                <li class="techee-list__item">
+                    <span class="techee-name">Name</span>
+                    <button class="techee-remove">&times;</button>
+                </li>
+            </ul>
+
+            <div id="techee-list" class="techee-list">
+                input to add names
+                + button to add names
+
+                list of names already added
+                    selectable techee name
+                    - button to remove techee name
+            </div>
+        </section>
+
+        <section id="calendar-space" class="container-calendar">
             v-calendar
             big "schedule" button (main call-to-action)
             buttons to export to diff calendar types
-        </div>
+        </section>
 
         <ul id="mobile-tabs" class="m-tabs l-m-tabs">
             <li class="m-tab">Techees</li>
@@ -45,13 +60,59 @@ export default {
 </script>
 
 <style>
+* {
+    box-sizing: border-box;
+}
+html, body, .main-container {
+    height: 100%;
+}
+body {
+    margin: 0;
+}
 #app {
+    background-color: #f7f7f7;
+    color: #2c3e50;
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
+}
+.container-techee {
+    background-color: #eee;
+}
+.main-container > section {
+    padding: 1em;
+}
+@media screen and (min-width: 600px) {
+    .main-container {
+        display: flex;
+    }
+    .container-techee {
+        max-width: 400px;
+        /*width: 35%;*/
+    }
+    .container-calendar {
+        width: 100%;
+        /*width: 65%;*/
+    }
+}
+
+.detail-overlay {
+    background-color: rgba(0, 0, 0, 0.9);
+    display: none;
+    height: 100%;
+    position: fixed;
+    width: 100%;
+}
+.detail-overlay--showing {
+    display: block;
+}
+.detail-overlay__content {
+    background-color: white;
+    display: inline-block;
+    margin-top: 25%;
+    padding: 1em;
+    text-align: left;
+    width: 400px;
 }
 
 h1, h2 {
@@ -63,12 +124,25 @@ ul {
     padding: 0;
 }
 
-li {
-    display: inline-block;
-    margin: 0 10px;
-}
-
 a {
     color: #42b983;
+}
+
+.m-tabs {
+    bottom: 0;
+    display: none;
+    margin: 0;
+    position: fixed;
+    width: 100%;
+}
+@media screen and (max-width: 600px) {
+    .m-tabs {
+        display: flex;
+    }
+}
+.m-tab {
+    flex: 1;
+    padding: 1em;
+    text-align: center;
 }
 </style>
