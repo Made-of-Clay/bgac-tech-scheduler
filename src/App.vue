@@ -12,28 +12,7 @@
             </div>
         </div>
 
-        <section id="techee-container" class="container-techee">
-            <div class="techee-add">
-                <input type="text" class="techee-add__input">
-                <button class="techee-add__button">+</button>
-            </div>
-
-            <ul class="techee-list">
-                <li class="techee-list__item">
-                    <span class="techee-name">Name</span>
-                    <button class="techee-remove">&times;</button>
-                </li>
-            </ul>
-
-            <div id="techee-list" class="techee-list">
-                input to add names
-                + button to add names
-
-                list of names already added
-                    selectable techee name
-                    - button to remove techee name
-            </div>
-        </section>
+        <techee-list></techee-list>
 
         <section id="calendar-space" class="container-calendar">
             v-calendar
@@ -50,8 +29,14 @@
 </template>
 
 <script>
+import techeeList from './techee-list';
+
 export default {
     name: 'app',
+    components: {
+        'techee-list': techeeList
+    },
+
     data () {
         return {
         };

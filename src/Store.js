@@ -8,6 +8,7 @@ exclusion dates
 export default {
     state: {
         techees: [/*{
+            id: '123-123-123',
             name: 'Adam',
             unavailable: ['1-1-2018']
         }*/]
@@ -22,18 +23,33 @@ export default {
                 techeeName = `${techeeName}`;
             }
             commit('ADD_TECHEE', techeeName);
-        }
+        },
+        removeTechee({commit}, techeeID) {
+            if (!techeeID) {
+                console.warn('No techee name passed to add; doing nothing');
+                return;
+            }
+            commit('REMOVE_TECHEE', techeeID);
+        },
     },
     mutations: {
         ADD_TECHEE(state, name) {
             let matches = state.techees.filter(techee => techee.name === name);
             if (!matches.length) {
                 state.techees.push({
+                    id: uniqid(),
                     name,
                     unavailable: []
                 });
             }
-        }
+        },
+        REMOVE_TECHEE(state, id) {
+            let rmIndex = -1;
+            state.techees.forEach((techee, i) => {
+                if (id === techee.id) rmIndex = i;
+            });
+            state.techees.splice(rmIndex, 1);
+        },
     }
 };
 
@@ -51,4 +67,7 @@ function uniqid(prefixParam = '') {
             .toString(16)
             .substring(1);
     }
+}
+function isString(val) {
+    return typeof val === 'string';
 }
