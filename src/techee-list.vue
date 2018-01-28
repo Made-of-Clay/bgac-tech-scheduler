@@ -13,8 +13,10 @@
             <li v-for="techee in techees"
                 :key="formatNameForKey(techee.id)"
                 class="techee-list__item">
+
                 <span class="techee-name">{{techee.name}}</span>
-                <button class="techee-remove"
+                <button class="techee-remove btn-icon"
+                    :title="`Remove ${techee.name}`"
                     @click="removeTechee(techee.id)">&times;</button>
             </li>
             <!-- <li class="techee-list__item">
@@ -65,3 +67,30 @@ export default {
     },
 };
 </script>
+
+<style>
+.container-techee {
+    background-color: #364253;
+    color: hsla(0, 0%, 100%, 0.75);
+    font-weight: bold;
+}
+.techee-list__item {
+    display: flex;
+    transition: color 0.3s, background-color 0.3s;
+}
+.techee-list__item:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: white;
+}
+.techee-name {
+    cursor: pointer;
+    flex: 1;
+    padding: 0.25em;
+}
+.techee-remove {
+    transition: all 0.3s;
+}
+.techee-remove:hover {
+    color: red;
+}
+</style>

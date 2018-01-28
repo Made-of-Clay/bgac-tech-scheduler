@@ -18,6 +18,13 @@
             v-calendar
             big "schedule" button (main call-to-action)
             buttons to export to diff calendar types
+            <div class="calendar">
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
         </section>
 
         <ul id="mobile-tabs" class="m-tabs l-m-tabs">
@@ -61,9 +68,6 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-.container-techee {
-    background-color: #eee;
-}
 .main-container > section {
     padding: 1em;
 }
@@ -79,6 +83,13 @@ body {
         width: 100%;
         /*width: 65%;*/
     }
+}
+
+.container-calendar {
+    background-color: #eaf2f6;
+}
+.calendar {
+    background-color: white;
 }
 
 .detail-overlay {
@@ -129,5 +140,16 @@ a {
     flex: 1;
     padding: 1em;
     text-align: center;
+}
+
+.btn-icon {
+    background-color: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font-size: 1.25em;
+    line-height: 1;
+    padding: 0.1em 0.4em;
+    transition: background-color 0.3s;
 }
 </style>
