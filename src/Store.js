@@ -11,7 +11,15 @@ export default {
             id: '123-123-123',
             name: 'Adam',
             unavailable: ['1-1-2018']
-        }*/]
+        }*/],
+        selectedID: '',
+    },
+    getters: {
+        selectedTechee({id, techees}) {
+            if (!techees.length) return {};
+            let [selected] = techees.filter(techee => techee.id === id);
+            return selected;
+        }
     },
     actions: {
         addTechee({commit}, techeeName = '') {
@@ -26,10 +34,17 @@ export default {
         },
         removeTechee({commit}, techeeID) {
             if (!techeeID) {
-                console.warn('No techee name passed to add; doing nothing');
+                console.warn('No techee ID passed to add; doing nothing');
                 return;
             }
             commit('REMOVE_TECHEE', techeeID);
+        },
+        selectTechee({commit}, techeeID) {
+            if (!techeeID) {
+                console.warn('No techee ID was passed to select');
+                return;
+            }
+            commit('SELECT_TECHEE', techeeID);
         },
     },
     mutations: {
@@ -49,6 +64,9 @@ export default {
                 if (id === techee.id) rmIndex = i;
             });
             state.techees.splice(rmIndex, 1);
+        },
+        SELECT_TECHEE(state, id) {
+            state.selectedID = id;
         },
     }
 };

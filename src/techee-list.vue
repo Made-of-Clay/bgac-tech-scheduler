@@ -12,7 +12,9 @@
         <ul class="techee-list">
             <li v-for="techee in techees"
                 :key="formatNameForKey(techee.id)"
-                class="techee-list__item">
+                class="techee-list__item"
+                :class="{'techee-list__item--selected':techee.id===selectedID}"
+                @click="selectTechee(techee.id)">
 
                 <span class="techee-name">{{techee.name}}</span>
                 <button class="techee-remove btn-icon"
@@ -46,7 +48,10 @@ export default {
     computed: {
         techees() {
             return this.$store.state.techees;
-        }
+        },
+        selectedID() {
+            return this.$store.state.selectedID;
+        },
     },
 
     methods: {
@@ -64,6 +69,9 @@ export default {
         clearName() {
             this.nameInput = '';
         },
+        selectTechee(id) {
+            this.$store.dispatch('selectTechee', id);
+        },
     },
 };
 </script>
@@ -77,6 +85,10 @@ export default {
 .techee-list__item {
     display: flex;
     transition: color 0.3s, background-color 0.3s;
+}
+.techee-list__item--selected {
+    background-color: hsla(215, 21%, 20%, 1);
+    color: #7ad2f4;
 }
 .techee-list__item:hover {
     background-color: rgba(0, 0, 0, 0.2);
