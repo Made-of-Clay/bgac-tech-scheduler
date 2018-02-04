@@ -39,7 +39,7 @@ const counts = {
 - Selecting name slides calendar to the side showing details
     - alt. use overlay of details over calendar (instead of sliding)
 
-### Detail Panel
+### Detail Overlay
 Details available on tech people:
 - Editable tech name
 - Entered exclusion dates (w/ *remove* ctl)
