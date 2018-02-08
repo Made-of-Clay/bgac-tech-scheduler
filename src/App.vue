@@ -1,16 +1,6 @@
 <template>
     <main id="app" class="main-container">
-        <div id="techee-detail" class="detail-overlay">
-            <div class="detail-overlay__content">
-                *only shows when techee is selected
-                *click none-name space to deselect techee
-                editable techee name
-                unavailable dates (v-calendar?)
-                list of added unavailable dates
-                    date
-                    - button to remove date
-            </div>
-        </div>
+        <techee-detail></techee-detail>
 
         <techee-list></techee-list>
 
@@ -37,11 +27,13 @@
 
 <script>
 import techeeList from './techee-list';
+import techeeDetail from './techee-detail';
 
 export default {
     name: 'app',
     components: {
-        'techee-list': techeeList
+        'techee-list': techeeList,
+        'techee-detail': techeeDetail,
     },
 
     data () {
@@ -92,24 +84,6 @@ body {
     background-color: white;
 }
 
-.detail-overlay {
-    background-color: rgba(0, 0, 0, 0.9);
-    display: none;
-    height: 100%;
-    position: fixed;
-    width: 100%;
-}
-.detail-overlay--showing {
-    display: block;
-}
-.detail-overlay__content {
-    background-color: white;
-    display: inline-block;
-    margin-top: 25%;
-    padding: 1em;
-    text-align: left;
-    width: 400px;
-}
 
 h1, h2 {
     font-weight: normal;
