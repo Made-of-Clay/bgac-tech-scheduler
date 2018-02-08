@@ -10,21 +10,25 @@
         </div>
 
         <ul class="techee-list">
-            <li v-for="techee in techees"
+            <!-- <li v-for="techee in techees"
                 :key="formatNameForKey(techee.id)"
                 class="techee-list__item"
                 :class="{'techee-list__item--selected':techee.id===selectedID}"
-                @click="selectTechee(techee.id)">
+                @click="selectTechee(techee.id)"> -->
 
-                <span class="techee-name">{{techee.name}}</span>
+                <!-- <span class="techee-name">{{techee.name}}</span>
                 <button class="techee-remove btn-icon"
                     :title="`Remove ${techee.name}`"
-                    @click="removeTechee(techee.id)">&times;</button>
-            </li>
-            <!-- <li class="techee-list__item">
-                <span class="techee-name">Name</span>
-                <button class="techee-remove">&times;</button>
-            </li> -->
+                    @click="removeTechee(techee.id)">&times;</button> -->
+            <!-- </li> -->
+            <removable-item v-for="techee in techees"
+                class="techee-list__item"
+                :class="{'techee-list__item--selected':techee.id===selectedID}"
+                :id="techee.id"
+                :text="techee.name"
+                :key="formatNameForKey(techee.id)"
+                @click="selectTechee(techee.id)"
+                @remove="removeTechee"></removable-item>
         </ul>
 
         <div id="techee-list" class="techee-list">
@@ -39,7 +43,13 @@
 </template>
 
 <script>
+import removableItem from './removable-item';
+
 export default {
+    components: {
+        'removable-item': removableItem,
+    },
+
     data() {
         return {
             nameInput: '',
@@ -70,6 +80,7 @@ export default {
             this.nameInput = '';
         },
         selectTechee(id) {
+            console.log('select', id);
             this.$store.dispatch('selectTechee', id);
         },
     },
@@ -83,21 +94,15 @@ export default {
     font-weight: bold;
 }
 .techee-list__item {
-    display: flex;
     transition: color 0.3s, background-color 0.3s;
 }
-.techee-list__item--selected {
+/*.techee-list__item--selected {
     background-color: hsla(215, 21%, 20%, 1);
     color: #7ad2f4;
-}
+}*/
 .techee-list__item:hover {
     background-color: rgba(0, 0, 0, 0.2);
     color: white;
-}
-.techee-name {
-    cursor: pointer;
-    flex: 1;
-    padding: 0.25em;
 }
 .techee-remove {
     transition: all 0.3s;
