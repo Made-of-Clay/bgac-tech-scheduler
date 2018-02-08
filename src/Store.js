@@ -15,9 +15,9 @@ export default {
         selectedID: '',
     },
     getters: {
-        selectedTechee({id, techees}) {
+        selectedTechee({selectedID, techees}) {
             if (!techees.length) return {};
-            let [selected] = techees.filter(techee => techee.id === id);
+            let [selected] = techees.filter(techee => techee.id === selectedID);
             return selected;
         }
     },
@@ -45,6 +45,9 @@ export default {
                 return;
             }
             commit('SELECT_TECHEE', techeeID);
+        },
+        deselectTechee({commit}) {
+            commit('SELECT_TECHEE', '');
         },
     },
     mutations: {
