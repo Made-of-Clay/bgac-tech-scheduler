@@ -49,6 +49,13 @@ export default {
         deselectTechee({commit}) {
             commit('SELECT_TECHEE', '');
         },
+        updateDates({commit}, dates) {
+            if (!dates.length) {
+                console.warn('No dates passed to add');
+                return;
+            }
+            commit('UPDATE_DATES', dates);
+        },
     },
     mutations: {
         ADD_TECHEE(state, name) {
@@ -70,6 +77,14 @@ export default {
         },
         SELECT_TECHEE(state, id) {
             state.selectedID = id;
+        },
+        UPDATE_DATES(state, dates) {
+            let techeeID = state.selectedID;
+            state.techees.forEach((techee, i) => {
+                if (techee.id === techeeID) {
+                    techee.unavailable = dates;
+                }
+            });
         },
     }
 };
