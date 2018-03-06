@@ -68,12 +68,10 @@ body {
         display: flex;
     }
     .container-techee {
-        max-width: 400px;
-        /*width: 35%;*/
+        width: 400px;
     }
     .container-calendar {
         width: 100%;
-        /*width: 65%;*/
     }
 }
 
@@ -117,7 +115,7 @@ a {
 }
 
 .btn-icon {
-    background-color: transparent;
+    background-color: rgba(0, 0, 0, 0.25);
     border: none;
     color: inherit;
     cursor: pointer;
@@ -126,4 +124,7 @@ a {
     padding: 0.1em 0.4em;
     transition: background-color 0.3s;
 }
+/*.btn-icon:hover {
+    background-color: black;
+}*/
 </style>

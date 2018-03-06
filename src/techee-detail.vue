@@ -23,22 +23,35 @@
             -->
             <strong class="detail-overlay__heading">Unavailable Dates</strong>
             <ul class="detail-overlay__dates">
-                <li v-for="(date, i) in selectedTechee.unavailable"
+                <!-- <li v-for="(date, i) in selectedTechee.unavailable"
                     class="detail-overlay__date">
                     {{formatDate(date)}}
                     <button class="btn-rm-date"
                         title="Remove Unavailable Date"
                         @click="removeDate(i)">&times;</button>
-                </li>
+                </li> -->
+                <removable-item v-for="(date, i) in selectedTechee.unavailable"
+                    :key="`date-${i}`"
+                    :id="`index-${i}`"
+                    :text="formatDate(date)"
+                    class="detail-overlay__date"
+                    @remove="removeDate"></removable-item>
+                <li v-if="!selectedTechee.unavailable.length" class="detail-overlay__date--none">No dates added yet!</li>
             </ul>
         </div>
     </div>
 </template>
 
 <script>
+import removableItem from './removable-item';
+
 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 export default {
+    components: {
+        'removable-item': removableItem,
+    },
+
     data() {
         return {
             selectedDates: []
@@ -66,8 +79,11 @@ export default {
             this.$store.dispatch('deselectTechee');
         },
         removeDate(index) {
+            let iNum = parseInt(index.substring(6));
+            console.log("iNum", iNum);
             let {unavailable} = this.selectedTechee;
-            let updatedDates = unavailable.filter((date, i) => i !== index);
+            let updatedDates = unavailable.filter((date, i) => i !== iNum);
+            console.log("updatedDates", updatedDates);
             // this.$store.dispatch('updateDates', updatedDates);
             this.selectedDates = updatedDates;
         },
@@ -116,6 +132,9 @@ export default {
 .detail-overlay__dates {
     margin: 0;
 }
+.detail-overlay__dates > li {
+    margin-top: 0.5em;
+}
 .detail-overlay__date {
     padding: 0.25em 0;
 }
@@ -125,5 +144,8 @@ export default {
 }
 .btn-rm-date {
     float: right;
+}
+.detail-overlay__date--none {
+    font-style: italic;
 }
 </style>
