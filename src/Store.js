@@ -1,5 +1,3 @@
-"use strict";
-
 /*
 names of techees
 exclusion dates
@@ -80,7 +78,7 @@ export default {
         },
         UPDATE_DATES(state, dates) {
             let techeeID = state.selectedID;
-            state.techees.forEach((techee, i) => {
+            state.techees.forEach(techee => {
                 if (techee.id === techeeID) {
                     techee.unavailable = dates;
                 }
