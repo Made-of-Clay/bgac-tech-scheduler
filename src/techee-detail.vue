@@ -36,7 +36,7 @@
                     :text="formatDate(date)"
                     class="detail-overlay__date"
                     @remove="removeDate"></removable-item>
-                <li v-if="!selectedTechee.unavailable.length" class="detail-overlay__date--none">No dates added yet!</li>
+                <li v-if="noDates" class="detail-overlay__date--none">No dates added yet!</li>
             </ul>
         </div>
     </div>
@@ -66,6 +66,9 @@ export default {
         },
         isShowing() {
             return !!this.selectedID;
+        },
+        noDates() {
+            return this.selectedTechee.unavailable && !this.selectedTechee.unavailable.length;
         },
     },
 
