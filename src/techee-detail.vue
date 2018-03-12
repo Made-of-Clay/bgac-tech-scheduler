@@ -74,7 +74,9 @@ export default {
 
     watch: {
         selectedDates(dates) {
-            this.$store.dispatch('updateDates', dates);
+            // this.$store.dispatch('updateDates', dates);
+            let techeeID = this.selectedID;
+            this.$store.dispatch('addUnavailableDates', {dates, techeeID});
         }
     },
     methods: {
@@ -83,10 +85,8 @@ export default {
         },
         removeDate(index) {
             let iNum = parseInt(index.substring(6));
-            console.log("iNum", iNum);
             let {unavailable} = this.selectedTechee;
             let updatedDates = unavailable.filter((date, i) => i !== iNum);
-            console.log("updatedDates", updatedDates);
             // this.$store.dispatch('updateDates', updatedDates);
             this.selectedDates = updatedDates;
         },
