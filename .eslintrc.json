@@ -8,7 +8,8 @@
         "plugin:vue/essential"
     ],
     "parserOptions": {
-        "sourceType": "module"
+        "sourceType": "module",
+        "ecmaVersion": 6
     },
     "rules": {
         "indent": [
