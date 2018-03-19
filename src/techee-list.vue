@@ -62,7 +62,6 @@ export default {
             this.nameInput = '';
         },
         selectTechee(id) {
-            console.log('select', id);
             this.$store.dispatch('selectTechee', id);
         },
     },

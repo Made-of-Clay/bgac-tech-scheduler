@@ -23,14 +23,8 @@
             -->
             <strong class="detail-overlay__heading">Unavailable Dates</strong>
             <ul class="detail-overlay__dates">
-                <!-- <li v-for="(date, i) in selectedTechee.unavailable"
-                    class="detail-overlay__date">
-                    {{formatDate(date)}}
-                    <button class="btn-rm-date"
-                        title="Remove Unavailable Date"
-                        @click="removeDate(i)">&times;</button>
-                </li> -->
-                <removable-item v-for="(date, i) in selectedTechee.unavailable"
+                <removable-item v-if="!noDates"
+                    v-for="(date, i) in selectedTechee.unavailable"
                     :key="`date-${i}`"
                     :id="`index-${i}`"
                     :text="formatDate(date)"
@@ -68,15 +62,13 @@ export default {
             return !!this.selectedID;
         },
         noDates() {
-            return this.selectedTechee.unavailable && !this.selectedTechee.unavailable.length;
+            return this.selectedTechee && this.selectedTechee.unavailable && !this.selectedTechee.unavailable.length;
         },
     },
 
     watch: {
         selectedDates(dates) {
-            // this.$store.dispatch('updateDates', dates);
-            let techeeID = this.selectedID;
-            this.$store.dispatch('addUnavailableDates', {dates, techeeID});
+            this.$store.dispatch('updateDates', dates);
         }
     },
     methods: {
@@ -87,7 +79,7 @@ export default {
             let iNum = parseInt(index.substring(6));
             let {unavailable} = this.selectedTechee;
             let updatedDates = unavailable.filter((date, i) => i !== iNum);
-            // this.$store.dispatch('updateDates', updatedDates);
+            this.$store.dispatch('updateDates', updatedDates);
             this.selectedDates = updatedDates;
         },
         formatDate(date) {
