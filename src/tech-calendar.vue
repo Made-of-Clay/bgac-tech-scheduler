@@ -6,11 +6,15 @@
         <div class="calendar-commands">
             <button class="calendar-commands__schedule"
                 @click="schedule">Schedule</button>
+
             <h4>Export to...</h4>
+
             <button class="btn calendar-commands__export--google"
                 @click="exportTo('google')">Google Calendar</button>
+
             <button class="btn calendar-commands__export--outlook"
                 @click="exportTo('outlook')">Outlook Calendar</button>
+
             <button class="btn calendar-commands__export--apple"
                 @click="exportTo('icalendar')">iCalendar</button>
         </div>
@@ -19,6 +23,23 @@
 
 <script>
 export default {
+    data() {
+        return {};
+    },
+    computed: {
+        testDates() {
+            let dates = [];
+            let { techees } = this.$store.state;
+            if (techees.length) {
+                techees.forEach(techee => {
+                    if (!techee.unavailable.length) return;
+                    dates = [...dates, ...techee.unavailable];
+                });
+            }
+            return dates;
+        }
+    },
+
     methods: {
         schedule() {
             console.log('BOOM');
