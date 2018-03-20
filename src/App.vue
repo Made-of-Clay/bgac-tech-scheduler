@@ -4,18 +4,7 @@
 
         <techee-list></techee-list>
 
-        <section id="calendar-space" class="container-calendar">
-            v-calendar
-            big "schedule" button (main call-to-action)
-            buttons to export to diff calendar types
-            <div class="calendar">
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-            </div>
-        </section>
+        <tech-calendar></tech-calendar>
 
         <ul id="mobile-tabs" class="m-tabs l-m-tabs">
             <li class="m-tab">Techees</li>
@@ -28,12 +17,14 @@
 <script>
 import techeeList from './techee-list';
 import techeeDetail from './techee-detail';
+import techCalendar from './tech-calendar';
 
 export default {
     name: 'app',
     components: {
         'techee-list': techeeList,
         'techee-detail': techeeDetail,
+        'tech-calendar': techCalendar,
     },
 
     data () {
@@ -51,10 +42,12 @@ html, body, .main-container {
     height: 100%;
 }
 body {
+    --white-text: rgba(255, 255, 255, 0.85);
+
     margin: 0;
 }
 #app {
-    background-color: #f7f7f7;
+    background-color: #eaf2f6;
     color: #2c3e50;
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -74,14 +67,6 @@ body {
         width: 100%;
     }
 }
-
-.container-calendar {
-    background-color: #eaf2f6;
-}
-.calendar {
-    background-color: white;
-}
-
 
 h1, h2 {
     font-weight: normal;
