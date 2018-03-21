@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import { uniqid } from './utils';
 
 export default {
     state: {
@@ -82,25 +83,3 @@ export default {
         },
     }
 };
-
-function uniqid(prefixParam = '') {
-    let prefix = (isString(prefixParam) && prefixParam !== '') ? `${prefixParam}-` : '';
-    let newID = `${prefix}${s4()}${s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;
-
-    if (document && document.getElementById(newID)) {
-        newID = uniqid(prefixParam);
-    }
-    return newID;
-
-    function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000)
-            .toString(16)
-            .substring(1);
-    }
-}
-function isString(val) {
-    return typeof val === 'string';
-}
-function isArray(val) {
-    return Array.isArray(val);
-}
