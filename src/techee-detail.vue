@@ -5,22 +5,13 @@
         @click.self="hide">
         <div v-if="selectedTechee"
             class="detail-overlay__content">
-            <!-- 
-            *only shows when techee is selected
-            *click none-name space to deselect techee
-            editable techee name
-            -->
             <input v-model="selectedTechee.name" 
                 type="text">
 
             <v-date-picker mode="multiple"
-                v-model="selectedDates"></v-date-picker>
-            <!-- 
-            unavailable dates (v-calendar?)
-            list of added unavailable dates
-                date
-                - button to remove date
-            -->
+                v-model="selectedTechee.unavailable"
+                @input="datesChanged"></v-date-picker>
+
             <strong class="detail-overlay__heading">Unavailable Dates</strong>
             <ul class="detail-overlay__dates">
                 <removable-item v-if="!noDates"
@@ -48,7 +39,8 @@ export default {
 
     data() {
         return {
-            selectedDates: []
+            selectedDates: [],
+            hiding: false,
         };
     },
     computed: {
@@ -66,11 +58,6 @@ export default {
         },
     },
 
-    watch: {
-        selectedDates(dates) {
-            this.$store.dispatch('updateDates', dates);
-        }
-    },
     methods: {
         hide() {
             this.$store.dispatch('deselectTechee');
@@ -86,6 +73,9 @@ export default {
             let d = new Date(date);
             let dayOfWeek = days[d.getDay()];
             return `${dayOfWeek}, ${d.toLocaleDateString()}`;
+        },
+        datesChanged(dates) {
+            this.$store.dispatch('updateDates', dates);
         }
     },
 };
@@ -98,6 +88,7 @@ export default {
     height: 100%;
     position: fixed;
     width: 100%;
+    z-index: 1;
 }
 .detail-overlay--showing {
     display: block;
