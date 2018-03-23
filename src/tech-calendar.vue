@@ -3,6 +3,28 @@
         <v-calendar is-double-paned
             is-expanded></v-calendar>
 
+        <div v-if="errMsg"
+            class="err-msg">
+            <output v-html="errMsg"></output>
+            <button class="clear-err"
+                @click="clearErr">&times;</button>
+        </div>
+
+        <div class="calendar-scheduler-range">
+            <div class="range-entry range-start">
+                <span class="label">Start</span>
+                <v-date-picker mode="single"
+                    v-model="rangeStart"
+                    class="range-picker"></v-date-picker>
+            </div>
+            <div class="range-entry range-end">
+                <span class="label">End</span>
+                <v-date-picker mode="single"
+                    v-model="rangeEnd"
+                    class="range-picker"></v-date-picker>
+            </div>
+        </div>
+
         <div class="calendar-commands">
             <button class="calendar-commands__schedule"
                 @click="schedule">Schedule</button>
@@ -22,9 +44,15 @@
 </template>
 
 <script>
+import Scheduler from './scheduler';
+
 export default {
     data() {
-        return {};
+        return {
+            rangeStart: null,
+            rangeEnd: null,
+            errMsg: '',
+        };
     },
     computed: {
         testDates() {
@@ -40,13 +68,44 @@ export default {
         }
     },
 
+    watch: {
+        rangeStart() {
+            this.compareDates();
+        },
+        rangeEnd() {
+            this.compareDates();
+        },
+    },
+
     methods: {
         schedule() {
-            console.log('BOOM');
+            if (!this.rangeStart || !this.rangeStart) {
+                this.errMsg = 'You must select a start and finish range';
+            }
+            let scheduler = new Scheduler({
+                techees: this.$store.state.techees,
+                dateRange: {
+                    start: this.rangeStart,
+                    end: this.rangeEnd,
+                }
+            });
         },
         exportTo(format) {
             console.log('format', format);
-        }
+        },
+        clearErr() {
+            this.errMsg = '';
+        },
+        compareDates() {
+            if (!this.rangeStart || !this.rangeEnd) return;
+            let start = new Date(this.rangeStart);
+            let end = new Date(this.rangeEnd);
+            if (start > end) {
+                this.errMsg = 'The <b>"start"</b> date must be before the <b>"end"</b> date';
+            } else if (this.errMsg && start < end) {
+                this.clearErr();
+            }
+        },
     }
 };
 </script>
@@ -61,6 +120,9 @@ export default {
 }
 .calendar-commands > button:focus {
     outline: none;
+}
+.range-picker input {
+    padding: 0.5em;
 }
 .calendar-commands__schedule {
     background: linear-gradient(#00E883, #00D075) #00E883;
@@ -81,5 +143,32 @@ export default {
 }
 .btn[class^='calendar-commands__export'] {
 
+}
+.err-msg {
+    background-color: hsla(0, 100%, 50%, 0.3);
+    border: 3px double red;
+    border-radius: 3px;
+    font-size: 1.2em;
+    margin-top: 1em;
+    padding: 0.5em;
+}
+.clear-err {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    float: right;
+    font-size: 1.25em;
+    line-height: 1;
+}
+.calendar-scheduler-range {
+    padding-top: 1em;
+    text-align: center;
+}
+.range-entry {
+    display: inline-block;
+}
+.range-entry > .label {
+    display: block;
+    text-align: left;
 }
 </style>
