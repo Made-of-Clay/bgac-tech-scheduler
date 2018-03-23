@@ -60,3 +60,9 @@ export function inObject(value, object) {
     }
     return (values(object)).indexOf(value) > -1;
 }
+
+export function forEach(collection, callback) {
+    for (let key in collection) {
+        callback(collection[key], key, collection);
+    }
+}
