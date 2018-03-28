@@ -45,6 +45,7 @@
 
 <script>
 import Scheduler from './scheduler';
+import {dateSurpassed} from './scheduler';
 
 export default {
     data() {
@@ -89,6 +90,8 @@ export default {
                     end: this.rangeEnd,
                 }
             });
+            let dates = scheduler.schedule();
+            // save dates to show them in v-calendar
         },
         exportTo(format) {
             console.log('format', format);
@@ -100,7 +103,7 @@ export default {
             if (!this.rangeStart || !this.rangeEnd) return;
             let start = new Date(this.rangeStart);
             let end = new Date(this.rangeEnd);
-            if (start > end) {
+            if (dateSurpassed(end, start)) {
                 this.errMsg = 'The <b>"start"</b> date must be before the <b>"end"</b> date';
             } else if (this.errMsg && start < end) {
                 this.clearErr();

@@ -43,7 +43,8 @@ module.exports = {
         alias: {
             'vue$': 'vue/dist/vue.esm.js',
             'vuex$': 'vuex/dist/vuex.esm.js',
-            'v-calendar$': 'v-calendar/lib/v-calendar.min.js'
+            'v-calendar$': 'v-calendar/lib/v-calendar.min.js',
+            'moment$': 'moment/moment.js',
         },
         extensions: ['*', '.js', '.vue', '.json']
     },
