@@ -80,8 +80,9 @@ export default {
 
     methods: {
         schedule() {
-            if (!this.rangeStart || !this.rangeStart) {
+            if (!this.rangeStart || !this.rangeEnd) {
                 this.errMsg = 'You must select a start and finish range';
+                return;
             }
             let scheduler = new Scheduler({
                 techees: this.$store.state.techees,
