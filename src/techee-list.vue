@@ -4,8 +4,10 @@
             <input v-model="nameInput"
                 type="text" 
                 class="techee-add__input"
+                placeholder="Enter a techee (e.g. Adam)"
                 @keyup.enter="addTechee">
             <button class="techee-add__button btn-icon"
+                :title="`Add ${nameInput}`"
                 @click="addTechee">+</button>
         </div>
 
@@ -74,7 +76,20 @@ export default {
     color: hsla(0, 0%, 100%, 0.75);
     font-weight: bold;
 }
+.techee-add {
+    display: flex;
+}
+.techee-add__input {
+    flex: 1;
+    font-size: 1.25em;
+    padding: 0.25em;
+}
+.techee-add__button {
+    height: 2em;
+    width: 2em;
+}
 .techee-list__item {
+    margin-bottom: 0.25em;
     transition: color 0.3s, background-color 0.3s;
 }
 .techee-list__item:hover {
