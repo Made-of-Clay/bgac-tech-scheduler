@@ -30,6 +30,14 @@ export function isProp(key, object) {
     return key in object;
 }
 
+export function isUndef(value) {
+    return value === undefined;
+}
+
+export function isNull(value) {
+    return value === null;
+}
+
 export function clone(obj, deep = false) {
     if (deep) {
         let copy = isArray(obj) ? [] : {};
