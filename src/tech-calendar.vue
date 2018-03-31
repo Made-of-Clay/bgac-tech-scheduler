@@ -1,6 +1,7 @@
 <template>
     <section id="calendar-space" class="container-calendar">
-        <v-calendar is-double-paned
+        <v-calendar :attributes="attributes"
+            is-double-paned
             is-expanded></v-calendar>
 
         <div v-if="errMsg"
@@ -27,7 +28,7 @@
 
         <div class="calendar-commands">
             <button class="calendar-commands__schedule"
-                @click="schedule">Schedule</button>
+                @click="runSchedule">Schedule</button>
 
             <h4>Export to...</h4>
 
@@ -45,11 +46,13 @@
 
 <script>
 import Scheduler from './scheduler';
+import moment from 'moment';
 import {dateSurpassed} from './scheduler';
 
 export default {
     data() {
         return {
+            schedule: [],
             rangeStart: null,
             rangeEnd: null,
             errMsg: '',
@@ -66,7 +69,39 @@ export default {
                 });
             }
             return dates;
-        }
+        },
+        attributes() {
+            let highlight = {
+                backgroundColor: '#79B2F9',
+                borderColor: '#004EB0',
+                borderWidth: '2px',
+                borderStyle: 'solid',
+            };
+            return this.schedule.map(item => {
+                let label = item.practice
+                    ? `Practice: ${item.practice}`
+                    : `S: ${item.audio} - V: ${item.video}`;
+                let dates = item.practice
+                    ? moment(item.date).subtract(6, 'days')._d
+                    : item.date;
+                return {
+                    dates,
+                    highlight,
+                    popover: { label }
+                };
+            });
+            // return this.schedule.map(item => {
+            //     let pracMonday = moment(item.date).subtract(6, 'days')._d;
+            //     return {
+            //         dates: [item.date, pracMonday],
+            //         highlight: {
+            //         },
+            //         popover: {
+            //             label: `S: ${item.audio} - V: ${item.video}`,
+            //         }
+            //     };
+            // });
+        },
     },
 
     watch: {
@@ -79,7 +114,7 @@ export default {
     },
 
     methods: {
-        schedule() {
+        runSchedule() {
             if (!this.rangeStart || !this.rangeEnd) {
                 this.errMsg = 'You must select a start and finish range';
                 return;
@@ -91,7 +126,22 @@ export default {
                     end: this.rangeEnd,
                 }
             });
-            let dates = scheduler.schedule();
+            let schedule = scheduler.schedule();
+            // console.log('this.schedule', this.schedule);
+            let mondays = [];
+            let sundays = [];
+            schedule.forEach(item => {
+                mondays.push({
+                    date: item.date,
+                    practice: item.practice
+                });
+                sundays.push({
+                    date: item.date,
+                    video: item.video,
+                    audio: item.audio,
+                });
+            });
+            this.schedule = [...mondays, ...sundays];
             // save dates to show them in v-calendar
         },
         exportTo(format) {

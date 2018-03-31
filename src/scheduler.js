@@ -1,28 +1,27 @@
-import {forEach, clone} from './utils';
+import {forEach, clone, isArray, isNull} from './utils';
 import moment from 'moment';
 
 export default class Scheduler {
     constructor({techees, dateRange}) {
-        this.counter = {};
-        this.techees = clone(techees, true);
+        this.counter = [];
+        this.countsNeedReset = false;
         this.dateRange = dateRange;
 
-        this.setupCounter();
+        this.setupCounter(techees);
         this.setupSundaysFromRange();
     }
 
-    setupCounter() {
-        this.techees.forEach(techee => this.counter[techee.name] = 0);
-        console.log("this.counter", this.counter);
+    setupCounter(techees) {
+        // this.techees.forEach(techee => this.counter[techee.name] = 0);
+        // console.log("this.counter", this.counter);
+        techees.forEach(techee => (this.counter.push({
+            techee,
+            count: 0
+        })));
     }
 
-    resetCounter(hard = false) {
-        if (hard) {
-            this.counter = {}; // use names
-        } else {
-            forEach(this.counter, (num, person, counter) => counter[person] = 0);
-            // consider using for..of here :D
-        }
+    resetCounter() {
+        this.counter.forEach(c => c.count = 0);
     }
 
     // each sunday will be checked in schedule()
@@ -56,19 +55,56 @@ export default class Scheduler {
     }
 
     schedule() {
+        if (this.countsNeedReset) {
+            this.resetCounter();
+        }
         console.log(`${this.sundays.length} to work with`, this.sundays);
-        // shuffle array of techees
-        let techees = shuffle([...this.techees]);
-        // make tmp array of techees based on count (lowest cnt to highest)
-        // ADAM --- YOU LEFT OFF HERE!!!
-        // start loop on first sunday
-        // check if 2 smallest count techees can work that day
-        // if not, get next techee(s) - rinse repeat until techee can work
-        // --- not sure what to do if no one says they can work that day ... error?
-        // send 2 smallest count techees to av randomizer (randomizes who is on a or v)
-        // add given techees/jobs to schedule object
-        // ++ their counts in counter
-        // do again
+        let schedule = [];
+        // shuffle techees into copy
+        let counters = this.counter;
+        const otherNum = num => num === 1 ? 2 : 1;
+        // each sunday, assign 2 techees w/ lowest count
+        this.sundays.forEach(sunday => {
+            counters = shuffle(counters); // shuffle each sunday
+            let lowest = {cnt1:null, cnt2:null};
+            counters.forEach(counter => {
+                let unavailable = false;
+                // check for unavailable dates
+                counter.techee.unavailable.forEach(date => {
+                    if (date.getTime() === sunday.getTime()) {
+                        unavailable = true;
+                    }
+                });
+                if (unavailable) return; // techee can't do current sunday
+
+                if (isNull(lowest.cnt1)) {
+                    lowest.cnt1 = counter;
+                } else if (counter.count < lowest.cnt1.count) {
+                    lowest.cnt2 = lowest.cnt1;
+                    lowest.cnt1 = counter;
+                } else if (isNull(lowest.cnt2) || counter.count < lowest.cnt2.count) {
+                    lowest.cnt2 = counter;
+                }
+            });
+            // i have 2 techees now w/ low counts; assign jobs
+            let rand = Math.floor(Math.random() * 2) + 1;
+            let other = otherNum(rand);
+            // each assigned techee randomly assigned to a|v
+            let video = lowest[`cnt${rand}`].techee.name;
+            let audio = lowest[`cnt${other}`].techee.name;
+            // v gets practice too
+            schedule.push({
+                video,
+                audio,
+                practice: video,
+                date: sunday,
+            });
+            // ++ their counters
+            lowest.cnt1.counter++;
+            lowest.cnt2.counter++;
+        });
+        this.countsNeedReset = true;
+        return schedule;
     }
 }
 
@@ -104,4 +140,28 @@ function shuffle(arr) {
     }
 
     return arr;
+}
+
+function buildListFromOrder(counter) {
+    let list = [];
+    forEach(counter, (cnt, person) => {
+        if (!isArray(list[cnt])) {
+            list[cnt] = [];
+        }
+        list[cnt].push(person);
+    });
+    return list;
+}
+
+function getNextTwo(order) {
+    let techees = [];
+    const HAS_TWO = t => t.length === 2;
+    order.forEach((list, orderNum) => {
+        if (!isArray(list) || HAS_TWO(techees)) return; // none w/ this orderNum
+        list.forEach(techee => {
+            if (HAS_TWO(techee)) return;
+            techees.push(techee);
+        });
+    });
+    return techees;
 }
