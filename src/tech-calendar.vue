@@ -30,16 +30,21 @@
             <button class="calendar-commands__schedule"
                 @click="runSchedule">Schedule</button>
 
-            <h4>Export to...</h4>
+            <!-- <h4>Export to...</h4> -->
 
-            <button class="btn calendar-commands__export--google"
+            <!-- <button class="btn calendar-commands__export--google"
                 @click="exportTo('google')">Google Calendar</button>
 
             <button class="btn calendar-commands__export--outlook"
                 @click="exportTo('outlook')">Outlook Calendar</button>
 
             <button class="btn calendar-commands__export--apple"
-                @click="exportTo('icalendar')">iCalendar</button>
+                @click="exportTo('icalendar')">iCalendar</button> -->
+        </div>
+
+        <div v-if="csv" id="csv-result">
+            <h2>CSV Result</h2>
+            <textarea v-html="csv" id="csv-output"></textarea>
         </div>
     </section>
 </template>
@@ -59,17 +64,6 @@ export default {
         };
     },
     computed: {
-        testDates() {
-            let dates = [];
-            let { techees } = this.$store.state;
-            if (techees.length) {
-                techees.forEach(techee => {
-                    if (!techee.unavailable.length) return;
-                    dates = [...dates, ...techee.unavailable];
-                });
-            }
-            return dates;
-        },
         attributes() {
             let highlight = {
                 backgroundColor: '#79B2F9',
@@ -90,17 +84,33 @@ export default {
                     popover: { label }
                 };
             });
-            // return this.schedule.map(item => {
-            //     let pracMonday = moment(item.date).subtract(6, 'days')._d;
-            //     return {
-            //         dates: [item.date, pracMonday],
-            //         highlight: {
-            //         },
-            //         popover: {
-            //             label: `S: ${item.audio} - V: ${item.video}`,
-            //         }
-            //     };
-            // });
+        },
+        jsonForCsv() {
+            if (!this.schedule || !this.schedule.length) return;
+            return this.schedule.map(item => {
+                let label = item.practice
+                    ? `Practice: ${item.practice}`
+                    : `S: ${item.audio} - V: ${item.video}`;
+                let dates = item.practice
+                    ? moment(item.date).subtract(6, 'days')._d
+                    : item.date;
+                return {
+                    Subject: label,
+                    'Start Date': formatForCsv(dates),
+                    'Start Time': item.practice ? '7:00 PM' : '8:30 AM',
+                    'End Date': formatForCsv(dates),
+                    'End Time': item.practice ? '8:30 PM' : '9:30 AM',
+                    'All Day Event': false
+                };
+            });
+        },
+        csv() {
+            if (!this.jsonForCsv || !this.jsonForCsv.length) return;
+            let keys = [Object.keys(this.jsonForCsv[0]).join(',')];
+            let data = this.jsonForCsv.map(item => {
+                return Object.values(item).join(',');
+            });
+            return [...keys, ...data].join('\n');
         },
     },
 
@@ -145,7 +155,14 @@ export default {
             // save dates to show them in v-calendar
         },
         exportTo(format) {
-            console.log('format', format);
+            console.log("format", format);
+        },
+        exportCSV() {
+            // let csvContent = 'data:text/csv;charset=utf-8,';
+            let w = window.open('');
+            let textarea = w.document.createElement('textarea');
+            textarea.innerHTML = this.csv;
+            w.document.body.appendChild(textarea);
         },
         clearErr() {
             this.errMsg = '';
@@ -162,6 +179,15 @@ export default {
         },
     }
 };
+
+function formatForCsv(date) {
+    let month = date.getMonth() + 1;
+    if (month.toString().length === 1) month = `0${month}`;
+    let day = date.getDay();
+    if (day.toString().length === 1) day = `0${day}`;
+    let year = date.getFullYear();
+    return `${month}/${day}/${year}`;
+}
 </script>
 
 <style>
@@ -224,5 +250,16 @@ export default {
 .range-entry > .label {
     display: block;
     text-align: left;
+}
+#csv-result {
+    margin-top: 1em;
+}
+#csv-result > h2 {
+    font-size: 1.2em;
+}
+#csv-output {
+    display: inline-block;
+    height: 100px;
+    width: 100%;
 }
 </style>
