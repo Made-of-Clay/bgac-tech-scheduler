@@ -111,6 +111,9 @@ export default {
         width: 400px;
     }
 }
+.detail-overlay__content input {
+    padding: 0.5em;
+}
 .detail-overlay__heading {
     display: block;
     margin: 0.75em 0 0.1em;
