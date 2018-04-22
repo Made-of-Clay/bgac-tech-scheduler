@@ -1,5 +1,6 @@
 <template>
     <section id="calendar-space" class="container-calendar">
+        <!-- TODO: add found of techees w/ scheduled days (not practices) -->
         <v-calendar :attributes="attributes"
             is-double-paned
             is-expanded></v-calendar>
@@ -29,17 +30,6 @@
         <div class="calendar-commands">
             <button class="calendar-commands__schedule"
                 @click="runSchedule">Schedule</button>
-
-            <!-- <h4>Export to...</h4> -->
-
-            <!-- <button class="btn calendar-commands__export--google"
-                @click="exportTo('google')">Google Calendar</button>
-
-            <button class="btn calendar-commands__export--outlook"
-                @click="exportTo('outlook')">Outlook Calendar</button>
-
-            <button class="btn calendar-commands__export--apple"
-                @click="exportTo('icalendar')">iCalendar</button> -->
         </div>
 
         <div v-if="csv" id="csv-result">
@@ -183,7 +173,7 @@ export default {
 function formatForCsv(date) {
     let month = date.getMonth() + 1;
     if (month.toString().length === 1) month = `0${month}`;
-    let day = date.getDay();
+    let day = date.getDate();
     if (day.toString().length === 1) day = `0${day}`;
     let year = date.getFullYear();
     return `${month}/${day}/${year}`;
